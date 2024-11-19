@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
+import RecipeSearch from './components/RecipeSearch';
 import RecipeDetails from './components/RecipeDetails';
 import EditRecipeForm from './components/EditRecipeForm';
 
@@ -10,19 +11,15 @@ const App = () => {
     <Router>
       <div>
         <h1>Recipe Manager</h1>
+        <RecipeSearch /> {/* Search Component */}
         <Routes>
-          {/* Home Page - Displays the list of recipes */}
           <Route path="/" element={
             <>
               <AddRecipeForm />
-              <RecipeList />
+              <RecipeList /> {/* Recipe List */}
             </>
           } />
-
-          {/* Recipe Details Page */}
           <Route path="/recipes/:id" element={<RecipeDetails />} />
-
-          {/* Edit Recipe Page */}
           <Route path="/recipes/:id/edit" element={<EditRecipeForm />} />
         </Routes>
       </div>

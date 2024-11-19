@@ -16,7 +16,7 @@ const RecipeDetails = () => {
   return (
     <div>
       <h2>Curry Powder{recipe.name}</h2>
-      <p>Made of mix of natural spices. Hibiscus leaves, cloves, salt, cinamon etc.{recipe.description}</p>
+      <p>Made of mix of natural spices. Hibiscus leaves, cloves, salt, cinamon etc{recipe.description}</p>
       <p><strong>Ingredients:</strong> {recipe.ingredients.join(', ')}</p>
       <Link to={`/recipes/${recipe.id}/edit`}>Edit Recipe</Link>
     </div>
