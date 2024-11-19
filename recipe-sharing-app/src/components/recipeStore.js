@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 
 const useRecipeStore = create((set) => ({
-  recipes: [],  // Array to hold all recipes
-  searchTerm: '',  // To store the search term
+  recipes: [],  // All recipes
+  searchTerm: '',  // Search term for filtering
+  favorites: [],  // User's favorite recipes
 
   // Action to add a new recipe
   addRecipe: (recipe) =>
@@ -33,6 +34,34 @@ const useRecipeStore = create((set) => ({
     return recipes.filter((recipe) =>
       recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  },
+
+  // Action to add a recipe to favorites
+  addToFavorites: (recipeId) =>
+    set((state) => {
+      const recipe = state.recipes.find((r) => r.id === recipeId);
+      if (recipe && !state.favorites.some((r) => r.id === recipeId)) {
+        return { favorites: [...state.favorites, recipe] };
+      }
+      return state;
+    }),
+
+  // Action to remove a recipe from favorites
+  removeFromFavorites: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((recipe) => recipe.id !== recipeId),
+    })),
+
+  // Get recommended recipes based on favorites
+  getRecommendations: (state) => {
+    // Example recommendation: Recipes with similar ingredients or category
+    if (state.favorites.length === 0) return [];
+    
+    // Placeholder logic for recommendations: Find recipes that match the description
+    const favoriteDescriptions = state.favorites.map((r) => r.description.toLowerCase());
+    return state.recipes.filter((recipe) =>
+      favoriteDescriptions.some((desc) => recipe.description.toLowerCase().includes(desc))
     );
   },
 }));
