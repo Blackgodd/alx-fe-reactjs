@@ -2,20 +2,22 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 const fetchPosts = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-  if (!res.ok) {
-    throw new Error('Failed to fetch posts');
-  }
-  return res.json();
-};
+    // Temporarily change the URL to an invalid one
+    const res = await fetch('https://jsonplaceholder.typicode.com/invalidEndpoint');
+    if (!res.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+    return res.json();
+  };
+  
 
 function PostsComponent() {
   const { data, isLoading, error, refetch, isFetching } = useQuery(
     ['posts'],
     fetchPosts,
     {
-      staleTime: 5000, // Data is fresh for 5 seconds
-      cacheTime: 10000, // Cached data is kept for 10 seconds
+      staleTime: 5000, // Data remains fresh for 5 seconds
+      cacheTime: 10000, // Cache expires after 10 seconds of inactivity
     }
   );
 
