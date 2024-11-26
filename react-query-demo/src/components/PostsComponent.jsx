@@ -17,6 +17,8 @@ function PostsComponent() {
     {
       staleTime: 5000, // Cache data is fresh for 5 seconds
       cacheTime: 10000, // Cache persists for 10 seconds
+      refetchOnWindowFocus: true, // Refetch when the window regains focus
+      keepPreviousData: true, // Keep previous data during background updates
     }
   );
 
