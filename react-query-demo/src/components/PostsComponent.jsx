@@ -3,12 +3,12 @@ import { useQuery } from 'react-query';
 
 // Function to fetch posts
 const fetchPosts = async () => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const res = await fetch('https://jsonplaceholder.typicode.com/invalidEndpoint');
     if (!res.ok) {
       throw new Error('Failed to fetch posts');
     }
     return res.json();
-  };  
+  };
   
 
 function PostsComponent() {
