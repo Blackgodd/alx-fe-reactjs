@@ -2,14 +2,12 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 const fetchPosts = async () => {
-    // Temporarily change the URL to an invalid one
     const res = await fetch('https://jsonplaceholder.typicode.com/invalidEndpoint');
     if (!res.ok) {
       throw new Error('Failed to fetch posts');
     }
     return res.json();
   };
-  
 
 function PostsComponent() {
   const { data, isLoading, error, refetch, isFetching } = useQuery(
