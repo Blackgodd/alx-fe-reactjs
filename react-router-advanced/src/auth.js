@@ -1,14 +1,15 @@
-const auth = {
-    isAuthenticated: false, // Simulate authentication status
-    login(callback) {
-      this.isAuthenticated = true;
-      setTimeout(callback, 100); // Simulate async login
-    },
-    logout(callback) {
-      this.isAuthenticated = false;
-      setTimeout(callback, 100); // Simulate async logout
-    },
+import { useState } from 'react';
+
+export function useAuth() {
+  // Simulate authentication state (you can replace this with real logic)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => setIsAuthenticated(true); // Simulate login
+  const logout = () => setIsAuthenticated(false); // Simulate logout
+
+  return {
+    isAuthenticated,
+    login,
+    logout,
   };
-  
-  export default auth;
-  
+}
