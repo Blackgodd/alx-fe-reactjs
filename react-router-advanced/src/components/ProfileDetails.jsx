@@ -4,7 +4,7 @@ function ProfileDetails() {
   return (
     <div>
       <h3>Profile Details</h3>
-      <p>Here are your profile details...</p>
+      <p>Here are your profile details.</p>
     </div>
   );
 }
