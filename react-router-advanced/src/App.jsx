@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Home from './Home';
 import PostsComponent from './components/PostsComponent';
 import Profile from './components/Profile';
-import Login from './components/Login';
+import BlogPost from './components/BlogPost';
 import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
 
-// Create a Query Client for React Query
+// React Query client setup
 const queryClient = new QueryClient();
 
 function App() {
@@ -25,13 +26,18 @@ function App() {
             <li>
               <Link to="/profile">Profile</Link>
             </li>
+            <li>
+              <Link to="/blog/1">Blog Post 1</Link>
+            </li>
+            <li>
+              <Link to="/blog/2">Blog Post 2</Link>
+            </li>
           </ul>
         </nav>
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<PostsComponent />} />
-          <Route path="/login" element={<Login />} />
           <Route
             path="/profile/*"
             element={
@@ -40,6 +46,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/login" element={<Login />} />
+          {/* Dynamic route for blog posts */}
+          <Route path="/blog/:id" element={<BlogPost />} />
         </Routes>
       </Router>
     </QueryClientProvider>
