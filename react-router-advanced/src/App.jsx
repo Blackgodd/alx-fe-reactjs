@@ -7,6 +7,7 @@ import Profile from './components/Profile';
 import BlogPost from './components/BlogPost';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
+import { AuthProvider } from './components/AuthContext';
 
 // React Query client setup
 const queryClient = new QueryClient();
@@ -51,6 +52,9 @@ function App() {
           <Route path="/blog/:id" element={<BlogPost />} />
         </Routes>
       </Router>
+      <AuthProvider>
+      {/* Rest of your App components */}
+    </AuthProvider>
     </QueryClientProvider>
   );
 }
