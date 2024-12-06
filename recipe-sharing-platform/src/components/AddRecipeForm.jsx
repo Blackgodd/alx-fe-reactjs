@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 
 function AddRecipeForm() {
-  const [title, setTitle] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    ingredients: "",
+    steps: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.title.trim()) newErrors.title = "Title is required.";
+    if (!formData.ingredients.trim())
+      newErrors.ingredients = "Ingredients are required.";
+    else if (formData.ingredients.split(",").length < 2)
+      newErrors.ingredients = "Please list at least two ingredients.";
+    if (!formData.steps.trim()) newErrors.steps = "Steps are required.";
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validation: Ensure all fields are filled and ingredients have at least 2 items
-    if (!title || !ingredients || !steps) {
-      setError("All fields are required.");
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
-    const ingredientList = ingredients.split(",").map((item) => item.trim());
-    if (ingredientList.length < 2) {
-      setError("Please include at least two ingredients.");
-      return;
-    }
-
-    setError("");
-    const newRecipe = {
-      title,
-      ingredients: ingredientList,
-      steps,
-    };
-
-    console.log("Recipe Submitted:", newRecipe);
+    setErrors({});
+    console.log("Recipe Submitted:", formData);
     alert("Recipe added successfully!");
-    setTitle("");
-    setIngredients("");
-    setSteps("");
+    setFormData({ title: "", ingredients: "", steps: "" });
   };
 
   return (
@@ -43,9 +47,11 @@ function AddRecipeForm() {
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
           Add a New Recipe
         </h1>
-        {error && (
+        {Object.keys(errors).length > 0 && (
           <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-            {error}
+            {Object.values(errors).map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
           </div>
         )}
         <div className="mb-4">
@@ -58,8 +64,9 @@ function AddRecipeForm() {
           <input
             type="text"
             id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -72,8 +79,9 @@ function AddRecipeForm() {
           </label>
           <textarea
             id="ingredients"
-            value={ingredients}
-            onChange={(e) => setIngredients(e.target.value)}
+            name="ingredients"
+            value={formData.ingredients}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="4"
           ></textarea>
@@ -87,8 +95,9 @@ function AddRecipeForm() {
           </label>
           <textarea
             id="steps"
-            value={steps}
-            onChange={(e) => setSteps(e.target.value)}
+            name="steps"
+            value={formData.steps}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="6"
           ></textarea>
