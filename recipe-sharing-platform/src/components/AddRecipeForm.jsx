@@ -1,41 +1,54 @@
 import React, { useState } from "react";
 
 function AddRecipeForm() {
-  const [formData, setFormData] = useState({
-    title: "",
-    ingredients: "",
-    steps: "",
-  });
-  const [errors, setErrors] = useState({});
+  const [title, setTitle] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [steps, setSteps] = useState("");
+  const [errors, setErrors] = useState({}); // State for errors
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required.";
-    if (!formData.ingredients.trim())
-      newErrors.ingredients = "Ingredients are required.";
-    else if (formData.ingredients.split(",").length < 2)
-      newErrors.ingredients = "Please list at least two ingredients.";
-    if (!formData.steps.trim()) newErrors.steps = "Steps are required.";
-    return newErrors;
-  };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (!title.trim()) {
+      newErrors.title = "Title is required.";
+    }
+
+    if (!ingredients.trim()) {
+      newErrors.ingredients = "Ingredients are required.";
+    } else {
+      const ingredientList = ingredients.split(",").map((item) => item.trim());
+      if (ingredientList.length < 2) {
+        newErrors.ingredients = "Include at least two ingredients.";
+      }
+    }
+
+    if (!steps.trim()) {
+      newErrors.steps = "Preparation steps are required.";
+    }
+
+    return newErrors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    setErrors(validationErrors);
 
-    setErrors({});
-    console.log("Recipe Submitted:", formData);
-    alert("Recipe added successfully!");
-    setFormData({ title: "", ingredients: "", steps: "" });
+    if (Object.keys(validationErrors).length === 0) {
+      // If no errors, process the form
+      const newRecipe = {
+        title,
+        ingredients: ingredients.split(",").map((item) => item.trim()),
+        steps,
+      };
+
+      console.log("Recipe Submitted:", newRecipe);
+      alert("Recipe added successfully!");
+      setTitle("");
+      setIngredients("");
+      setSteps("");
+      setErrors({});
+    }
   };
 
   return (
@@ -49,9 +62,11 @@ function AddRecipeForm() {
         </h1>
         {Object.keys(errors).length > 0 && (
           <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-            {Object.values(errors).map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
+            <ul>
+              {Object.entries(errors).map(([key, error]) => (
+                <li key={key}>{error}</li>
+              ))}
+            </ul>
           </div>
         )}
         <div className="mb-4">
@@ -64,10 +79,13 @@ function AddRecipeForm() {
           <input
             type="text"
             id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={`w-full p-2 border ${
+              errors.title ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none focus:ring-2 ${
+              errors.title ? "focus:ring-red-500" : "focus:ring-blue-500"
+            }`}
           />
         </div>
         <div className="mb-4">
@@ -79,10 +97,13 @@ function AddRecipeForm() {
           </label>
           <textarea
             id="ingredients"
-            name="ingredients"
-            value={formData.ingredients}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={ingredients}
+            onChange={(e) => setIngredients(e.target.value)}
+            className={`w-full p-2 border ${
+              errors.ingredients ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none focus:ring-2 ${
+              errors.ingredients ? "focus:ring-red-500" : "focus:ring-blue-500"
+            }`}
             rows="4"
           ></textarea>
         </div>
@@ -95,10 +116,13 @@ function AddRecipeForm() {
           </label>
           <textarea
             id="steps"
-            name="steps"
-            value={formData.steps}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={steps}
+            onChange={(e) => setSteps(e.target.value)}
+            className={`w-full p-2 border ${
+              errors.steps ? "border-red-500" : "border-gray-300"
+            } rounded focus:outline-none focus:ring-2 ${
+              errors.steps ? "focus:ring-red-500" : "focus:ring-blue-500"
+            }`}
             rows="6"
           ></textarea>
         </div>
