@@ -8,6 +8,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
   const handleSearch = async (username) => {
     setIsLoading(true);
     setError(null);
@@ -29,6 +30,7 @@ const App = () => {
       <SearchResults user={user} isLoading={isLoading} error={error} />
     </div>
   );
+  
 };
 
 export default App;

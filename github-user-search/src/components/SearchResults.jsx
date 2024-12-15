@@ -6,8 +6,12 @@ const SearchResults = ({ user, isLoading, error }) => {
 
   return user ? (
     <div className="flex flex-col items-center mt-4">
-      <img src={user.avatar_url} alt={user.name} className="w-24 h-24 rounded-full" />
-      <h1 className="mt-4 text-xl font-bold">{user.name}</h1>
+      <img 
+        src={user.avatar_url} 
+        alt={`${user.login}'s avatar`} 
+        className="w-24 h-24 rounded-full" 
+      />
+      <h1 className="mt-4 text-xl font-bold">{user.login}</h1>
       <a 
         href={user.html_url} 
         target="_blank" 
