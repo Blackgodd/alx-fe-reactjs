@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
-import SearchBar from './components/SearchBar';
-import UserCard from './components/UserCard';
-import { fetchUser } from './services/Api';
+import Search from './components/Search';
+import SearchResults from './components/SearchResults';
+import { fetchUserData } from './services/githubService';
 
-function App() {
+const App = () => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSearch = async (username) => {
+    setIsLoading(true);
+    setError(null);
+    setUser(null);
     try {
-      const userData = await fetchUser(username);
+      const userData = await fetchUserData(username);
       setUser(userData);
-      setError(''); // clear error on success
     } catch (error) {
       setError(error.message);
-      setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="p-10">
-      <h1 className="text-center text-3xl font-bold mb-6">GitHub User Search</h1>
-      <SearchBar onSearch={handleSearch} />
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-      {user && <UserCard user={user} />}
+    <div className="container mx-auto p-8">
+      <h1 className="text-center text-2xl font-bold mb-4">GitHub User Search</h1>
+      <Search onSearch={handleSearch} />
+      <SearchResults user={user} isLoading={isLoading} error={error} />
     </div>
   );
-}
+};
 
 export default App;
