@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Search from './components/Search';
 import SearchResults from './components/SearchResults';
 import { fetchUserData } from './services/githubService';
+import EnhancedSearchForm from './components/EnhancedSearchForm';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -28,6 +29,7 @@ const App = () => {
       <h1 className="text-center text-2xl font-bold mb-4">GitHub User Search</h1>
       <Search onSearch={handleSearch} />
       <SearchResults user={user} isLoading={isLoading} error={error} />
+      <EnhancedSearchForm />
     </div>
   );
   
